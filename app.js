@@ -28,17 +28,32 @@ function sendMessage(urlObject){
 
     //   /mySlashCommand catfish    'catfish' is stored in var userCommand
     var userText = urlObject.text;
+    var link = 'https://api.spotify.com/v1/search?type=track&q=' + userText  + '&limit=1';
+    var song;
+    var id;
+    $.ajax({
+            url: queryURL,
+            method: "GET"
+        })
+        .done(function(response) { 
+            id = response.tracks.items[0].id;
+            song = 'https://open.spotify.com/embed/track/' + id; 
 
-    slack.webhook({
+        });
+    
+     slack.webhook({
      channel: urlObject.channel_name,
 
-      text: "hello you typed: " + userText                  // the response back to slack
+      text: "hello you typed: " + song                  // the response back to slack
+    
+    
 
     }, function(err, response) {
         if (err){
             console.log(err)
         }
     });
+;  
 }
 
 /////////////////////////////////////////////////////////
